@@ -1,0 +1,46 @@
+name: Brakeman findings
+description: >-
+  Run Brakeman over the whole application and emit one JSONL finding per
+  warning, keyed by Brakeman's own fingerprint so an issue survives the warning
+  moving to a different line. Pairs with security-findings-issues.
+
+inputs:
+  brakeman-command:
+    description: How to invoke Brakeman.
+    required: false
+    default: bundle exec brakeman
+  output:
+    description: JSONL file to append findings to.
+    required: false
+    default: ""
+  check-latest:
+    description: >-
+      Also report Brakeman being out of date. Off by default: that is a gem
+      version bump, which Dependabot's bundler ecosystem already raises as a
+      pull request, and a pull request that fixes it beats an issue asking
+      someone to. Turn it on only where Dependabot does not watch the bundle.
+    required: false
+    default: "false"
+
+outputs:
+  count:
+    description: Number of findings written.
+    value: ${{ steps.scan.outputs.count }}
+  completed:
+    description: >-
+      false when Brakeman could not produce a usable report. A scan that did not
+      run reports nothing, which is indistinguishable from a clean result, so
+      callers pass this to security-findings-issues' close-resolved.
+    value: ${{ steps.scan.outputs.completed }}
+
+runs:
+  using: composite
+  steps:
+    - name: Scan
+      id: scan
+      shell: bash
+      env:
+        BRAKEMAN_COMMAND: ${{ inputs.brakeman-command }}
+        FINDINGS_OUTPUT: ${{ inputs.output }}
+        CHECK_LATEST: ${{ inputs.check-latest }}
+      run: ${{ github.action_path }}/emit-findings.sh
