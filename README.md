@@ -1,7 +1,7 @@
 # brakeman-findings
 
 Run Brakeman over the whole application and emit one JSONL finding per warning,
-for [`security-findings-issues`](https://github.com/ten-thousand-hammers/security-findings-issues)
+for [`security-findings-issues`](https://github.com/uptick-dev/security-findings-issues)
 to track as issues.
 
 Brakeman reports problems in code you wrote. There is no package to bump, so
@@ -12,11 +12,11 @@ nothing else raises them — Dependabot has no view of first-party source.
 ```yaml
 - name: Brakeman
   id: brakeman
-  uses: ten-thousand-hammers/brakeman-findings@v1
+  uses: uptick-dev/brakeman-findings@v1
   with:
     output: ${{ runner.temp }}/findings/brakeman.jsonl
 
-- uses: ten-thousand-hammers/security-findings-issues@v1
+- uses: uptick-dev/security-findings-issues@v1
   with:
     findings: ${{ runner.temp }}/findings.jsonl
     token: ${{ secrets.GITHUB_TOKEN }}
