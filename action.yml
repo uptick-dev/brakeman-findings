@@ -2,7 +2,7 @@ name: Brakeman findings
 description: >-
   Run Brakeman over the whole application and emit one JSONL finding per
   warning, keyed by Brakeman's own fingerprint so an issue survives the warning
-  moving to a different line. Pairs with security-findings-issues.
+  moving to a different line. Pairs with security-findings-stories.
 
 inputs:
   brakeman-command:
@@ -30,7 +30,7 @@ outputs:
     description: >-
       false when Brakeman could not produce a usable report. A scan that did not
       run reports nothing, which is indistinguishable from a clean result, so
-      callers pass this to security-findings-issues' close-resolved.
+      callers pass this to security-findings-stories' close-resolved.
     value: ${{ steps.scan.outputs.completed }}
 
 runs:

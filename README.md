@@ -1,8 +1,8 @@
 # brakeman-findings
 
 Run Brakeman over the whole application and emit one JSONL finding per warning,
-for [`security-findings-issues`](https://github.com/uptick-dev/security-findings-issues)
-to track as issues.
+for [`security-findings-stories`](https://github.com/uptick-dev/security-findings-stories)
+to track as Shortcut stories.
 
 Brakeman reports problems in code you wrote. There is no package to bump, so
 nothing else raises them — Dependabot has no view of first-party source.
@@ -16,10 +16,10 @@ nothing else raises them — Dependabot has no view of first-party source.
   with:
     output: ${{ runner.temp }}/findings/brakeman.jsonl
 
-- uses: uptick-dev/security-findings-issues@v1
+- uses: uptick-dev/security-findings-stories@v1
   with:
     findings: ${{ runner.temp }}/findings.jsonl
-    token: ${{ secrets.GITHUB_TOKEN }}
+    shortcut-token: ${{ secrets.SHORTCUT_TOKEN }}
     close-resolved: ${{ steps.brakeman.outputs.completed }}
 ```
 
@@ -57,7 +57,7 @@ tell a clean report from no report. This checks that the report has the shape
 it should — `.warnings` is an array — and otherwise emits a `scan/brakeman`
 finding and sets `completed=false`.
 
-Pass that to `security-findings-issues`' `close-resolved`. A run where the
+Pass that to `security-findings-stories`' `close-resolved`. A run where the
 scanner did not execute reports nothing, which is indistinguishable from
 finding nothing; closing on it would retire live findings.
 
